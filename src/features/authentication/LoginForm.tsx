@@ -45,7 +45,7 @@ function LoginForm() {
             className="w-full px-3 py-2 border-none  rounded-md text-blue_gray-200 bg-blue_gray-300"
           />
         </div>
-        <div className="text-center text-sm text-blue_gray-200">
+        <div className="text-center text-sm text-blue_gray-200 py-4">
           Forgot password ? &nbsp;
           <Link to="/reset" className="text-blue_main-100 hover:underline">
             Recover it now
@@ -53,7 +53,7 @@ function LoginForm() {
         </div>
         <Button
           type="submit"
-          className="w-full bg-blue_main-100 hover:bg-blue-700 text-white py-2 rounded-md"
+          className="w-full bg-blue_main-100 hover:bg-blue-700 text-white py-3 rounded-md"
         >
           LOGIN
         </Button>

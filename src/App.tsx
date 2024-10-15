@@ -15,6 +15,7 @@ import PrivacySecurity from "./pages/PrivacySecurity";
 import Givers from "./pages/Givers";
 import ResetPin from "./pages/ResetPin";
 import PageNotFound from "./pages/PageNotFound";
+import PinEntry from "./pages/PinEntry";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,6 +45,7 @@ function App() {
             <Route path="users" element={<Users />} />
           </Route>
           <Route path="login" element={<Login />} />
+          <Route path="pin-entry" element={<PinEntry />} />
           <Route path="reset" element={<ResetPin />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
