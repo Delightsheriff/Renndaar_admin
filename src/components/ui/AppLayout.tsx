@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { Bell, ChevronDown, LogOut, Menu, Settings, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  ChartPie,
+  Gift,
+  LogOut,
+  Menu,
+  Settings,
+  Shield,
+  ThumbsDown,
+  User,
+  Users,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 import {
   Sheet,
   SheetContent,
@@ -17,15 +20,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Link, NavLink, Outlet } from "react-router-dom";
+
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import UserProfileDropdown from "./UserProfileDropdown";
+import NotificationDialog from "./NotificationDialog";
 
 type NavItem = {
   name: string;
@@ -33,51 +31,69 @@ type NavItem = {
   to: string;
 };
 
-const navItems: NavItem[] = [
-  { name: "Overview", icon: <Users size={20} />, to: "/dashboard" },
+export const navItems: NavItem[] = [
+  { name: "Overview", icon: <ChartPie size={20} />, to: "/dashboard" },
   { name: "Users", icon: <Users size={20} />, to: "/users" },
-  { name: "Seekers", icon: <Users size={20} />, to: "/seekers" },
-  { name: "Givers", icon: <Users size={20} />, to: "/givers" },
-  { name: "Disputes", icon: <Users size={20} />, to: "/disputes" },
-  { name: "Ren Rewards", icon: <Users size={20} />, to: "/rewards" },
-  { name: "Privacy And Security", icon: <Users size={20} />, to: "privacy" },
+  { name: "Seekers", icon: <User size={20} />, to: "/seekers" },
+  { name: "Givers", icon: <User size={20} />, to: "/givers" },
+  {
+    name: "Disputes",
+    icon: <ThumbsDown size={20} />,
+    to: "/disputes",
+  },
+  { name: "Ren Rewards", icon: <Gift size={20} />, to: "/rewards" },
+  { name: "Privacy And Security", icon: <Shield size={20} />, to: "/privacy" },
 ];
 
-function NotificationDialog() {
+interface SettingsLinkProps {
+  withText?: boolean; // Optional prop to control whether to show text alongside the icon
+}
+
+function SettingsLink({ withText = false }: SettingsLinkProps): JSX.Element {
+  const location = useLocation();
+  const isActive = location.pathname === "/settings";
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="icon">
-          <Bell size={24} />
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Notifications</DialogTitle>
-          <DialogDescription>
-            View your recent notifications here.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="mt-4">
-          <p>You have no new notifications.</p>
-        </div>
-      </DialogContent>
-    </Dialog>
+    <Link
+      to="/settings"
+      className={`flex items-center ${
+        withText
+          ? "w-full justify-center border border-gray-500 rounded py-2"
+          : ""
+      }`}
+    >
+      <Settings
+        className={`${withText ? "mr-2 h-4 w-4" : "h-15 w-15"} ${
+          isActive ? "text-blue-500" : "text-gray-500"
+        }`}
+      />
+      {withText && <span>Settings</span>}
+    </Link>
   );
 }
 
-function SidebarContent() {
+type SidebarContentProps = {
+  navItems: NavItem[];
+};
+
+function SidebarContent({ navItems }: SidebarContentProps): JSX.Element {
   return (
     <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center border-b px-6">
+      <div className="flex h-16 items-center px-6">
         <img src="/logo.svg" alt="Logo" />
       </div>
-      <nav className="flex-1 space-y-1 px-2 py-4">
+      <nav className="flex-1 space-y-2 px-2 py-5">
         {navItems.map((item) => (
           <NavLink
             key={item.name}
             to={item.to}
-            className="flex items-center rounded-lg px-2 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+            className={({ isActive }) =>
+              `flex items-center rounded-lg px-3 py-3 text-sm font-medium ${
+                isActive
+                  ? "bg-blue_main-100 hover:bg-blue-700 text-white"
+                  : "text-blue_gray-200 hover:bg-gray-50 hover:text-gray-900"
+              }`
+            }
           >
             {item.icon}
             <span className="ml-3">{item.name}</span>
@@ -85,32 +101,43 @@ function SidebarContent() {
         ))}
       </nav>
       <div className="border-t p-4 space-y-2">
-        <Link
+        <NavLink
           to="/settings"
-          className="w-full flex justify-center items-center border border-gray-500 rounded py-2 "
+          className={({ isActive }) =>
+            `flex items-center rounded-lg px-3 py-3 text-sm font-medium ${
+              isActive
+                ? "bg-blue_main-100 hover:bg-blue-700 text-white"
+                : "text-blue_gray-200 hover:bg-gray-50 hover:text-gray-900"
+            }`
+          }
         >
-          <Settings className="mr-2 h-4 w-4" />
-          Settings
-        </Link>
-        <Button
-          variant="outline"
-          className="w-full flex justify-center items-center border border-gray-500  rounded py-4"
-        >
-          LogOut
+          <Settings />
+          <span className="ml-3">Settings</span>
+        </NavLink>
+        <Button className="flex justify-start rounded-lg px-3 py-3 text-sm font-medium w-full text-blue_gray-200 bg-transparent border-none shadow-none hover:bg-gray-50 hover:text-gray-900 active:bg-blue_main-100">
+          <LogOut className="mr-2 h-4 w-4" />
+          <span className="ml-3">Logout</span>
         </Button>
       </div>
     </div>
   );
 }
 
-export default function AppLayout() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+export default function AppLayout(): JSX.Element {
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const location = useLocation();
+
+  const getCurrentPageTitle = (): string => {
+    const currentPath = location.pathname;
+    const currentNavItem = navItems.find((item) => item.to === currentPath);
+    return currentNavItem ? currentNavItem.name : "RENNDAAR";
+  };
 
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar for larger screens */}
       <aside className="hidden w-64 bg-white shadow-md lg:block">
-        <SidebarContent />
+        <SidebarContent navItems={navItems} />
       </aside>
 
       {/* Sidebar for mobile screens */}
@@ -120,13 +147,13 @@ export default function AppLayout() {
             <SheetTitle></SheetTitle>
             <SheetDescription></SheetDescription>
           </SheetHeader>
-          <SidebarContent />
+          <SidebarContent navItems={navItems} />
         </SheetContent>
       </Sheet>
 
       <div className="flex flex-1 flex-col overflow-hidden">
         {/* Header */}
-        <header className="flex h-16 items-center justify-between border-b bg-white px-4 shadow-sm">
+        <header className="flex h-16 items-center justify-between border-b bg-gray-100 px-4 shadow-sm">
           <div className="flex items-center">
             <Sheet>
               <SheetTrigger asChild>
@@ -140,50 +167,13 @@ export default function AppLayout() {
                 </Button>
               </SheetTrigger>
             </Sheet>
-            <h1 className="ml-4 text-xl font-semibold">RENNDAAR</h1>
+            <h1 className="ml-4 text-2xl font-semibold uppercase">
+              {getCurrentPageTitle()}
+            </h1>
           </div>
           <div className="flex items-center space-x-4">
-            {/* Settings link */}
-            <Link to="/settings">
-              <Settings className="h-15 w-15" />
-            </Link>
-
-            {/* User Profile Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center space-x-2">
-                  <img
-                    src="/placeholder.svg"
-                    alt="User"
-                    className="h-15 w-15 rounded-full"
-                  />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="flex w-full items-center justify-between">
-                      Settings
-                      <ChevronDown size={16} />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuItem>General</DropdownMenuItem>
-                      <DropdownMenuItem>Security</DropdownMenuItem>
-                      <DropdownMenuItem>Notifications</DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            {/* Notification Dialog */}
+            <SettingsLink />
+            <UserProfileDropdown />
             <NotificationDialog />
           </div>
         </header>
