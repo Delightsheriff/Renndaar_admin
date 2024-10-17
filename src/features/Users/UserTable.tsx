@@ -1,11 +1,5 @@
 import React, { useState, useMemo } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Search,
-  ArrowUpDown,
-  Filter,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowUpDown, Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
