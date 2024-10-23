@@ -13,6 +13,9 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        yellow: {
+          100: "#FFD339",
+        },
         blue_main: {
           100: "#0071FF",
         },
