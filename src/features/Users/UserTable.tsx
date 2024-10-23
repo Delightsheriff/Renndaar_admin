@@ -74,7 +74,7 @@ export default function UserTable() {
         </Table>
       </div>
 
-      <div className="mt-4 flex items-center justify-between">
+      <div className="mt-10 flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-2 sm:space-y-0">
         <Select
           value={itemsPerPage.toString()}
           onValueChange={(value) => setItemsPerPage(Number(value))}
