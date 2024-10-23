@@ -24,7 +24,9 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
   //   onItemsPerPageChange,
 }) => {
   return (
-    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0">
+    // <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0">
+    // <div className="flex items-center justify-center space-x-2 my-4">
+    <div className="my-4">
       <div className="flex items-center space-x-2">
         <Button
           variant="outline"
@@ -49,12 +51,15 @@ export const PaginationControls: React.FC<PaginationControlsProps> = ({
         >
           <ChevronRight className="h-4 w-4" />
         </Button>
+      </div>
+      <p>
+        {" "}
         {showingFrom && showingTo && totalItems && (
           <span className="text-sm text-gray-500 font-medium">
             Showing {showingFrom} to {showingTo} of {totalItems}
           </span>
         )}
-      </div>
+      </p>
     </div>
   );
 };

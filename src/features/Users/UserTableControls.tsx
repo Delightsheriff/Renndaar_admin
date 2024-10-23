@@ -20,7 +20,7 @@ export const UserTableControls: React.FC<UserTableControlsProps> = ({
   children,
 }) => {
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 space-y-2 sm:space-y-0">
+    <div className="flex flex-col sm:flex-row justify-between items-center sm:items-center mb-4 space-y-4 sm:space-y-0">
       <Select defaultValue="This Month">
         <SelectTrigger className="w-full sm:w-[180px]">
           <SelectValue placeholder="Select period" />
@@ -31,7 +31,9 @@ export const UserTableControls: React.FC<UserTableControlsProps> = ({
           <SelectItem value="This Year">This Year</SelectItem>
         </SelectContent>
       </Select>
-      {children}
+      <div className="w-full sm:w-auto flex justify-center sm:justify-start">
+        {children}
+      </div>
       <div className="w-full sm:w-auto">
         <Input
           type="text"
