@@ -46,7 +46,7 @@ export const navItems: NavItem[] = [
 ];
 
 interface SettingsLinkProps {
-  withText?: boolean; // Optional prop to control whether to show text alongside the icon
+  withText?: boolean;
 }
 
 function SettingsLink({ withText = false }: SettingsLinkProps): JSX.Element {
@@ -74,9 +74,17 @@ function SettingsLink({ withText = false }: SettingsLinkProps): JSX.Element {
 
 type SidebarContentProps = {
   navItems: NavItem[];
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function SidebarContent({ navItems }: SidebarContentProps): JSX.Element {
+function SidebarContent({
+  navItems,
+  setIsSidebarOpen,
+}: SidebarContentProps): JSX.Element {
+  const handleNavLinkClick = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
     <div className="flex h-full flex-col">
       <div className="flex h-16 items-center px-6">
@@ -94,6 +102,7 @@ function SidebarContent({ navItems }: SidebarContentProps): JSX.Element {
                   : "text-blue_gray-200 hover:bg-gray-50 hover:text-gray-900"
               }`
             }
+            onClick={handleNavLinkClick}
           >
             {item.icon}
             <span className="ml-3">{item.name}</span>
@@ -110,11 +119,15 @@ function SidebarContent({ navItems }: SidebarContentProps): JSX.Element {
                 : "text-blue_gray-200 hover:bg-gray-50 hover:text-gray-900"
             }`
           }
+          onClick={handleNavLinkClick}
         >
           <Settings />
           <span className="ml-3">Settings</span>
         </NavLink>
-        <Button className="flex justify-start rounded-lg px-3 py-3 text-sm font-medium w-full text-blue_gray-200 bg-transparent border-none shadow-none hover:bg-gray-50 hover:text-gray-900 active:bg-blue_main-100">
+        <Button
+          className="flex justify-start rounded-lg px-3 py-3 text-sm font-medium w-full text-blue_gray-200 bg-transparent border-none shadow-none hover:bg-gray-50 hover:text-gray-900 active:bg-blue_main-100"
+          onClick={handleNavLinkClick}
+        >
           <LogOut className="mr-2 h-4 w-4" />
           <span className="ml-3">Logout</span>
         </Button>
@@ -137,7 +150,10 @@ export default function AppLayout(): JSX.Element {
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar for larger screens */}
       <aside className="hidden w-64 bg-white shadow-md lg:block">
-        <SidebarContent navItems={navItems} />
+        <SidebarContent
+          navItems={navItems}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
       </aside>
 
       {/* Sidebar for mobile screens */}
@@ -147,7 +163,10 @@ export default function AppLayout(): JSX.Element {
             <SheetTitle></SheetTitle>
             <SheetDescription></SheetDescription>
           </SheetHeader>
-          <SidebarContent navItems={navItems} />
+          <SidebarContent
+            navItems={navItems}
+            setIsSidebarOpen={setIsSidebarOpen}
+          />
         </SheetContent>
       </Sheet>
 
