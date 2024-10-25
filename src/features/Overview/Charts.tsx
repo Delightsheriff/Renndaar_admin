@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -12,11 +12,21 @@ import {
   Cell,
   TooltipProps,
 } from "recharts";
-import { CalendarIcon, InfoIcon } from "lucide-react";
+import { InfoIcon } from "lucide-react";
+import { subMonths, startOfMonth, endOfMonth } from "date-fns";
+import { DateRange } from "react-day-picker";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Types
 interface UserData {
   date: string;
+  day: number;
   android: number;
   ios: number;
 }
@@ -26,16 +36,14 @@ interface ChartData {
   value: number;
 }
 
-interface DateRange {
-  start: string;
-  end: string;
-}
-
 // Custom type for the tooltip
-interface CustomTooltipProps extends TooltipProps<any, any> {
-  active?: boolean;
-  payload?: any[];
-  label?: string;
+interface CustomTooltipProps
+  extends Omit<TooltipProps<number, string>, "payload"> {
+  payload?: Array<{
+    name: string;
+    value: number;
+    color: string;
+  }>;
 }
 
 // Utility functions
@@ -47,44 +55,63 @@ const calculatePercentage = (data: ChartData[]): number => {
 
 const filterDataByDateRange = (
   data: UserData[],
-  range: DateRange,
+  range: DateRange | undefined,
 ): UserData[] => {
-  const startIndex = data.findIndex((item) => item.date === range.start);
-  const endIndex = data.findIndex((item) => item.date === range.end) + 1;
-  return data.slice(startIndex, endIndex);
+  if (!range || !range.from || !range.to) return data;
+  const startDate = range.from.getTime();
+  const endDate = range.to.getTime();
+  return data.filter((item) => {
+    const itemDate = new Date(item.date).getTime();
+    return itemDate >= startDate && itemDate <= endDate;
+  });
 };
 
 // Components
 const DateSelector: React.FC<{
-  range: DateRange;
-  onRangeChange: (range: DateRange) => void;
-  availableDates: string[];
-}> = ({ range, onRangeChange, availableDates }) => {
+  date: DateRange | undefined;
+  onDateChange: (date: DateRange | undefined) => void;
+}> = ({ onDateChange }) => {
+  const handleSelectChange = (value: string) => {
+    const today = new Date();
+    let from: Date, to: Date;
+
+    switch (value) {
+      case "this_month":
+        from = startOfMonth(today);
+        to = endOfMonth(today);
+        break;
+      case "last_month":
+        from = startOfMonth(subMonths(today, 1));
+        to = endOfMonth(subMonths(today, 1));
+        break;
+      case "last_3_months":
+        from = startOfMonth(subMonths(today, 3));
+        to = endOfMonth(today);
+        break;
+      case "all":
+        from = new Date(0); // Beginning of time
+        to = today;
+        break;
+      default:
+        return;
+    }
+
+    onDateChange({ from, to });
+  };
+
   return (
-    <div className="flex items-center space-x-4 text-gray-600">
-      <CalendarIcon size={20} />
-      <select
-        className="border rounded p-1"
-        value={`${range.start}-${range.end}`}
-        onChange={(e) => {
-          const [start, end] = e.target.value.split("-");
-          onRangeChange({ start, end });
-        }}
-      >
-        <option
-          value={`${availableDates[0]}-${
-            availableDates[availableDates.length - 1]
-          }`}
-        >
-          Full Range
-        </option>
-        <option value={`${availableDates[0]}-${availableDates[6]}`}>
-          Last 7 Days
-        </option>
-        <option value={`${availableDates[0]}-${availableDates[13]}`}>
-          Last 14 Days
-        </option>
-      </select>
+    <div className="flex items-center space-x-2">
+      <Select onValueChange={handleSelectChange} defaultValue="this_month">
+        <SelectTrigger className="w-[120px]">
+          <SelectValue placeholder="Select date range" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="this_month">This Month</SelectItem>
+          <SelectItem value="last_month">Last Month</SelectItem>
+          <SelectItem value="last_3_months">Last 3 Months</SelectItem>
+          <SelectItem value="all">All</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   );
 };
@@ -113,12 +140,9 @@ const UserChart: React.FC<{ data: UserData[] }> = ({ data }) => {
 
   return (
     <ResponsiveContainer width="100%" height={400}>
-      <LineChart
-        data={data}
-        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-      >
+      <LineChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
         <CartesianGrid strokeDasharray="3 3" vertical={false} />
-        <XAxis dataKey="date" axisLine={false} tickLine={false} />
+        <XAxis dataKey="day" axisLine={false} tickLine={false} />
         <YAxis axisLine={false} tickLine={false} />
         <Tooltip content={<CustomTooltip />} />
         <Line
@@ -161,7 +185,7 @@ const KYCChart: React.FC<{ data: ChartData[] }> = ({ data }) => {
           >
             {data.map((entry, index) => (
               <Cell
-                key={`cell-${index}`}
+                key={`cell-${index} {${entry}`}
                 fill={COLORS[index % COLORS.length]}
               />
             ))}
@@ -192,7 +216,7 @@ const ContractChart: React.FC<{ data: ChartData[] }> = ({ data }) => {
           >
             {data.map((entry, index) => (
               <Cell
-                key={`cell-${index}`}
+                key={`cell-${index} {${entry}`}
                 fill={COLORS[index % COLORS.length]}
               />
             ))}
@@ -231,30 +255,29 @@ const ToggleSwitch: React.FC<{
 };
 
 // Sample data
-// Dummy data
 const userData: UserData[] = [
-  { date: "1", android: 5, ios: 5 },
-  { date: "2", android: 6, ios: 8 },
-  { date: "3", android: 7, ios: 10 },
-  { date: "4", android: 8, ios: 12 },
-  { date: "5", android: 8, ios: 14 },
-  { date: "6", android: 9, ios: 15 },
-  { date: "7", android: 9, ios: 17 },
-  { date: "8", android: 10, ios: 17 },
-  { date: "9", android: 10, ios: 18 },
-  { date: "10", android: 11, ios: 19 },
-  { date: "11", android: 12, ios: 22 },
-  { date: "12", android: 13, ios: 25 },
-  { date: "13", android: 14, ios: 28 },
-  { date: "14", android: 14, ios: 29 },
-  { date: "15", android: 13, ios: 27 },
-  { date: "16", android: 12, ios: 25 },
-  { date: "17", android: 11, ios: 22 },
-  { date: "18", android: 10, ios: 20 },
-  { date: "19", android: 11, ios: 21 },
-  { date: "20", android: 12, ios: 23 },
-  { date: "21", android: 13, ios: 25 },
-  { date: "22", android: 14, ios: 27 },
+  { date: "2023-07-01", day: 1, android: 5, ios: 5 },
+  { date: "2023-07-02", day: 2, android: 6, ios: 8 },
+  { date: "2023-07-03", day: 3, android: 7, ios: 10 },
+  { date: "2023-07-04", day: 4, android: 8, ios: 12 },
+  { date: "2023-07-05", day: 5, android: 8, ios: 14 },
+  { date: "2023-07-06", day: 6, android: 9, ios: 15 },
+  { date: "2023-07-07", day: 7, android: 9, ios: 17 },
+  { date: "2023-07-08", day: 8, android: 10, ios: 17 },
+  { date: "2023-07-09", day: 9, android: 10, ios: 18 },
+  { date: "2023-07-10", day: 10, android: 11, ios: 19 },
+  { date: "2023-07-11", day: 11, android: 12, ios: 22 },
+  { date: "2023-07-12", day: 12, android: 13, ios: 25 },
+  { date: "2023-07-13", day: 13, android: 14, ios: 28 },
+  { date: "2023-07-14", day: 14, android: 14, ios: 29 },
+  { date: "2023-07-15", day: 15, android: 13, ios: 27 },
+  { date: "2023-07-16", day: 16, android: 12, ios: 25 },
+  { date: "2023-07-17", day: 17, android: 11, ios: 22 },
+  { date: "2023-07-18", day: 18, android: 10, ios: 20 },
+  { date: "2023-07-19", day: 19, android: 11, ios: 21 },
+  { date: "2023-07-20", day: 20, android: 12, ios: 23 },
+  { date: "2023-07-21", day: 21, android: 13, ios: 25 },
+  { date: "2023-07-22", day: 22, android: 14, ios: 27 },
 ];
 
 const kycData: ChartData[] = [
@@ -270,9 +293,9 @@ const contractData: ChartData[] = [
 
 // Main Temp Component
 const Temp: React.FC = () => {
-  const [dateRange, setDateRange] = useState<DateRange>({
-    start: userData[0].date,
-    end: userData[userData.length - 1].date,
+  const [dateRange, setDateRange] = useState<DateRange | undefined>({
+    from: startOfMonth(new Date()),
+    to: endOfMonth(new Date()),
   });
   const [isToggleOn, setIsToggleOn] = useState(true);
 
@@ -281,7 +304,14 @@ const Temp: React.FC = () => {
     [dateRange],
   );
 
-  const availableDates = useMemo(() => userData.map((d) => d.date), []);
+  useEffect(() => {
+    // Set initial date range to "This Month"
+    const today = new Date();
+    setDateRange({
+      from: startOfMonth(today),
+      to: endOfMonth(today),
+    });
+  }, []);
 
   return (
     <div className="my-4">
@@ -292,11 +322,7 @@ const Temp: React.FC = () => {
               <h1 className="text-xl font-bold text-gray-800 mb-2 md:mb-0">
                 USERS IN RENNDAAR
               </h1>
-              <DateSelector
-                range={dateRange}
-                onRangeChange={setDateRange}
-                availableDates={availableDates}
-              />
+              <DateSelector date={dateRange} onDateChange={setDateRange} />
             </div>
             <div className="flex justify-end space-x-4 mb-4">
               <div className="flex items-center">

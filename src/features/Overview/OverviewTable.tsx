@@ -1,5 +1,5 @@
 import { DisputeRequestList, SupportRequestList } from "./support";
-import Temp from "./tesmp";
+import Temp from "./Charts";
 
 export default function OverviewTable() {
   return (
