@@ -291,8 +291,8 @@ const contractData: ChartData[] = [
   { name: "Dispute", value: 10 },
 ];
 
-// Main Temp Component
-const Temp: React.FC = () => {
+// Main Charts Component
+const Charts: React.FC = () => {
   const [dateRange, setDateRange] = useState<DateRange | undefined>({
     from: startOfMonth(new Date()),
     to: endOfMonth(new Date()),
@@ -364,4 +364,4 @@ const Temp: React.FC = () => {
   );
 };
 
-export default Temp;
+export default Charts;
