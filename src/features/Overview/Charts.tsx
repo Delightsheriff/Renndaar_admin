@@ -167,10 +167,24 @@ const UserChart: React.FC<{ data: UserData[] }> = ({ data }) => {
 };
 
 const KYCChart: React.FC<{ data: ChartData[] }> = ({ data }) => {
-  const COLORS = ["#007AFF", "#FF3B30"];
+  const COLORS = ["#007AFF", "#FF3B30"]; // Blue for verified, Red for unverified
 
   return (
     <div className="w-full h-full">
+      <div className="flex justify-center items-center space-x-4 mb-1">
+        {/* Label for Verified */}
+        <div className="flex items-center space-x-2">
+          <div className="w-3 h-3 rounded-full bg-blue-500" />
+          <span className="text-sm font-medium">Verified (KYC)</span>
+        </div>
+        {/* Label for Unverified */}
+        <div className="flex items-center space-x-2">
+          <div className="w-3 h-3 rounded-full bg-red-500" />
+          <span className="text-sm  font-medium">Unverified</span>
+        </div>
+      </div>
+
+      {/* Pie Chart */}
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
@@ -202,6 +216,22 @@ const ContractChart: React.FC<{ data: ChartData[] }> = ({ data }) => {
 
   return (
     <div className="w-full h-full">
+      <div className="flex justify-center items-center space-x-4 mb-1">
+        {/* Label for Verified */}
+        <div className="flex items-center space-x-2">
+          <div className="w-3 h-3 rounded-full bg-[#FFA500" />
+          <span className="text-sm font-medium">Active</span>
+        </div>
+        {/* Label for Unverified */}
+        <div className="flex items-center space-x-2">
+          <div className="w-3 h-3 rounded-full bg-[#34C759" />
+          <span className="text-sm  font-medium">Completed</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <div className="w-3 h-3 rounded-full bg-[#FF3B30]" />
+          <span className="text-sm  font-medium">Dispute</span>
+        </div>
+      </div>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
