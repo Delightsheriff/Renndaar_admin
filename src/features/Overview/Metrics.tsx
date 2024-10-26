@@ -100,8 +100,8 @@ const Box: React.FC<BoxProps> = ({
 // Dashboard Component
 const Metrics: React.FC<{ data: MetricsData }> = ({ data }) => {
   return (
-    <div className="container mx-auto ">
-      <div className="flex flex-wrap justify-between gap-4">
+    <div className="container mx-auto">
+      <div className="flex flex-wrap justify-between gap-4 ">
         {/* Left Section - Two Rows with 8 Boxes */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 flex-1">
           <Box
