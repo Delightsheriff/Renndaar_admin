@@ -7,9 +7,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { dummyUsers } from "@/data/mockUsers";
-import { UserTableRow } from "./UserTableRow";
-import { UserTableHeader } from "./UserTableHeader";
-import { UserTableControls } from "./UserTableControls";
+import { GiversTableRow } from "./GiversTableRow";
+import { GiversTableHeader } from "./GiversTableHeader";
+import { GiversTableControls } from "./GiversTableControls";
 // import { PaginationControls } from "../shared/PaginationControls";
 import { useTableState } from "@/hooks/useTableState";
 import { PaginationControls } from "@/components/shared/PaginationControls";
@@ -39,9 +39,12 @@ export default function UserTable() {
 
   return (
     <div className="p-4 sm:p-6 md:p-8 bg-white border-none rounded-md">
-      <h1 className="text-xl sm:text-2xl font-bold mb-4">ALL USERS</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mb-4">ALL Givers</h1>
 
-      <UserTableControls searchTerm={searchTerm} onSearchChange={setSearchTerm}>
+      <GiversTableControls
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+      >
         <PaginationControls
           currentPage={currentPage}
           totalPages={totalPages}
@@ -55,11 +58,11 @@ export default function UserTable() {
           itemsPerPage={itemsPerPage}
           onItemsPerPageChange={setItemsPerPage}
         />
-      </UserTableControls>
+      </GiversTableControls>
 
       <div className="overflow-x-auto">
         <Table>
-          <UserTableHeader
+          <GiversTableHeader
             sortField={sortField}
             sortOrder="asc"
             handleSort={handleSort}
@@ -68,7 +71,7 @@ export default function UserTable() {
           />
           <TableBody>
             {paginatedUsers.map((user, index) => (
-              <UserTableRow key={user.id} user={user} index={index} />
+              <GiversTableRow key={user.id} user={user} index={index} />
             ))}
           </TableBody>
         </Table>

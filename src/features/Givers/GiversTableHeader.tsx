@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SortField, SortOrder, User } from "@/types/user";
 
-interface UserTableHeaderProps {
+interface GiversTableHeaderProps {
   sortField: SortField;
   sortOrder: SortOrder;
   handleSort: (field: SortField) => void;
@@ -17,7 +17,7 @@ interface UserTableHeaderProps {
   setSelectedStatus: (value: "All" | User["status"]) => void;
 }
 
-export const UserTableHeader: React.FC<UserTableHeaderProps> = ({
+export const GiversTableHeader: React.FC<GiversTableHeaderProps> = ({
   //   sortField,
   handleSort,
   setSelectedVerification,

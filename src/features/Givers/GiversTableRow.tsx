@@ -3,12 +3,15 @@ import { TableCell, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User } from "@/types/user";
 
-interface UserTableRowProps {
+interface GiversTableRowProps {
   user: User;
   index: number;
 }
 
-export const UserTableRow: React.FC<UserTableRowProps> = ({ user, index }) => {
+export const GiversTableRow: React.FC<GiversTableRowProps> = ({
+  user,
+  index,
+}) => {
   return (
     <TableRow
       className={`${

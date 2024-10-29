@@ -39,7 +39,7 @@ export default function SeekerTable() {
 
   return (
     <div className="p-4 sm:p-6 md:p-8 bg-white border-none rounded-md">
-      <h1 className="text-xl sm:text-2xl font-bold mb-4">ALL USERS</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mb-4">ALL SEEKERS</h1>
 
       <SeekerTableControls
         searchTerm={searchTerm}

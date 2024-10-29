@@ -1,5 +1,6 @@
+import GiversTable from "@/features/Givers/GiversTable";
 const Givers = () => {
-  return <div>Givers</div>;
+  return <GiversTable />;
 };
 
 export default Givers;

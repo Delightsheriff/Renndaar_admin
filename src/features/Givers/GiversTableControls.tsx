@@ -8,13 +8,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface UserTableControlsProps {
+interface GiversTableControlsProps {
   searchTerm: string;
   onSearchChange: (value: string) => void;
   children: React.ReactNode;
 }
 
-export const UserTableControls: React.FC<UserTableControlsProps> = ({
+export const GiversTableControls: React.FC<GiversTableControlsProps> = ({
   searchTerm,
   onSearchChange,
   children,
