@@ -1,5 +1,11 @@
+import SeekerTable from "@/features/Seekers/SeekerTable";
+
 const Seekers = () => {
-  return <div>Seekers</div>;
+  return (
+    <>
+      <SeekerTable />
+    </>
+  );
 };
 
 export default Seekers;
