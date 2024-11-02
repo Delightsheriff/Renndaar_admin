@@ -101,15 +101,15 @@ const DateSelector: React.FC<{
 
   return (
     <div className="flex items-center space-x-2">
-      <Select onValueChange={handleSelectChange} defaultValue="this_month">
+      <Select onValueChange={handleSelectChange} defaultValue="all">
         <SelectTrigger className="w-[120px]">
           <SelectValue placeholder="Select date range" />
         </SelectTrigger>
         <SelectContent>
+          <SelectItem value="all">All</SelectItem>
           <SelectItem value="this_month">This Month</SelectItem>
           <SelectItem value="last_month">Last Month</SelectItem>
           <SelectItem value="last_3_months">Last 3 Months</SelectItem>
-          <SelectItem value="all">All</SelectItem>
         </SelectContent>
       </Select>
     </div>

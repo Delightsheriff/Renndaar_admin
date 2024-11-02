@@ -10,3 +10,16 @@ export type User = {
 
 export type SortField = keyof User;
 export type SortOrder = "asc" | "desc";
+
+export interface Seeker {
+  id: string | number;
+  fullName: string;
+  email: string;
+  dateOfContract: string;
+  phoneNo: string;
+  location: string;
+  status: "Active" | "Suspended";
+}
+
+export type SeekerSortField = keyof Seeker;
+export type SeekerSortOrder = "asc" | "desc";

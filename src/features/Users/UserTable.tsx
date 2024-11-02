@@ -46,12 +46,6 @@ export default function UserTable() {
           currentPage={currentPage}
           totalPages={totalPages}
           setCurrentPage={setCurrentPage}
-          //   showingFrom={(currentPage - 1) * itemsPerPage + 1}
-          //   showingTo={Math.min(
-          //     currentPage * itemsPerPage,
-          //     filteredAndSortedUsers.length,
-          //   )}
-          //   totalItems={filteredAndSortedUsers.length}
           itemsPerPage={itemsPerPage}
           onItemsPerPageChange={setItemsPerPage}
         />
@@ -74,35 +68,6 @@ export default function UserTable() {
         </Table>
       </div>
 
-      {/* <div className="mt-10 flex flex-col sm:flex-row sm:items-center justify-between  space-y-2 sm:space-y-0">
-        <Select
-          value={itemsPerPage.toString()}
-          onValueChange={(value) => setItemsPerPage(Number(value))}
-        >
-          <SelectTrigger className="w-[150px]">
-            <SelectValue placeholder="Per page" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="10">10 Per Page</SelectItem>
-            <SelectItem value="20">20 Per Page</SelectItem>
-            <SelectItem value="50">50 Per Page</SelectItem>
-          </SelectContent>
-        </Select>
-        <PaginationControls
-          currentPage={currentPage}
-          totalPages={totalPages}
-          setCurrentPage={setCurrentPage}
-          showingFrom={(currentPage - 1) * itemsPerPage + 1}
-          showingTo={Math.min(
-            currentPage * itemsPerPage,
-            filteredAndSortedUsers.length,
-          )}
-          totalItems={filteredAndSortedUsers.length}
-          itemsPerPage={itemsPerPage}
-          onItemsPerPageChange={setItemsPerPage}
-        />
-        <Button>Jump</Button>
-      </div> */}
       <div className="mt-10 flex flex-col sm:flex-row items-center sm:items-center justify-between space-y-4 sm:space-y-0">
         <div className="w-full sm:w-auto flex justify-center sm:justify-start">
           <Select
@@ -134,8 +99,8 @@ export default function UserTable() {
             onItemsPerPageChange={setItemsPerPage}
           />
         </div>
-        <div className="w-full sm:w-auto flex justify-center sm:justify-start">
-          <Button>Jump</Button>
+        <div className="w-full sm:w-auto">
+          <Button className="w-full sm-w-auto">Jump</Button>
         </div>
       </div>
     </div>
