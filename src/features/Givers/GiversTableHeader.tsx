@@ -7,20 +7,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { SortField, SortOrder, User } from "@/types/user";
+import { Giver, GiverSortField, GiverSortOrder } from "@/types/user";
 
 interface GiversTableHeaderProps {
-  sortField: SortField;
-  sortOrder: SortOrder;
-  handleSort: (field: SortField) => void;
-  setSelectedVerification: (value: "All" | User["verification"]) => void;
-  setSelectedStatus: (value: "All" | User["status"]) => void;
+  sortField: GiverSortField;
+  sortOrder: GiverSortOrder;
+  handleSort: (field: GiverSortField) => void;
+  setSelectedStatus: (value: "All" | Giver["status"]) => void;
 }
 
 export const GiversTableHeader: React.FC<GiversTableHeaderProps> = ({
-  //   sortField,
+  sortField,
   handleSort,
-  setSelectedVerification,
   setSelectedStatus,
 }) => {
   return (
@@ -31,56 +29,53 @@ export const GiversTableHeader: React.FC<GiversTableHeaderProps> = ({
             className="flex items-center cursor-pointer"
             onClick={() => handleSort("fullName")}
           >
-            Full Name <ArrowUpDown className="ml-2 h-4 w-4" />
-            {/* {sortField === "fullName" && (
+            Full Name
+            {sortField === "fullName" && (
               <ArrowUpDown className="ml-2 h-4 w-4" />
-            )} */}
+            )}
           </div>
         </TableHead>
-        <TableHead className="w-[120px] min-w-[120px]">
-          <div
-            className="flex items-center cursor-pointer"
-            onClick={() => handleSort("dateReg")}
-          >
-            Date Reg <ArrowUpDown className="ml-2 h-4 w-4" />
-            {/* {sortField === "dateReg" && (
-              <ArrowUpDown className="ml-2 h-4 w-4" />
-            )} */}
-          </div>
-        </TableHead>
-        <TableHead className="w-[120px] min-w-[120px]">Phone No.</TableHead>
         <TableHead className="w-[200px] min-w-[200px]">
           <div
             className="flex items-center cursor-pointer"
             onClick={() => handleSort("email")}
           >
-            Email <ArrowUpDown className="ml-2 h-4 w-4" />
-            {/* {sortField === "email" && <ArrowUpDown className="ml-2 h-4 w-4" />} */}
+            Email
+            {sortField === "email" && <ArrowUpDown className="ml-2 h-4 w-4" />}
           </div>
         </TableHead>
         <TableHead className="w-[150px] min-w-[150px]">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <div className="flex items-center cursor-pointer">
-                Verification (KYC) <ArrowUpDown className="ml-2 h-4 w-4" />
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem onSelect={() => setSelectedVerification("All")}>
-                All
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => setSelectedVerification("Verified")}
-              >
-                Verified
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => setSelectedVerification("Pending")}
-              >
-                Pending
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => handleSort("dateOfContract")}
+          >
+            Date of Contract
+            {sortField === "dateOfContract" && (
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            )}
+          </div>
+        </TableHead>
+        <TableHead className="w-[120px] min-w-[120px]">
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => handleSort("phoneNo")}
+          >
+            Phone Number
+            {sortField === "phoneNo" && (
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            )}
+          </div>
+        </TableHead>
+        <TableHead className="w-[120px] min-w-[120px]">
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => handleSort("location")}
+          >
+            Location
+            {sortField === "location" && (
+              <ArrowUpDown className="ml-2 h-4 w-4" />
+            )}
+          </div>
         </TableHead>
         <TableHead className="w-[120px] min-w-[120px]">
           <DropdownMenu>

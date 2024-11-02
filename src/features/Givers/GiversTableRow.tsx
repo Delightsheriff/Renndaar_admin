@@ -1,10 +1,11 @@
 import React from "react";
 import { TableCell, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { User } from "@/types/user";
+import { Giver } from "@/types/user";
+import { useNavigate } from "react-router-dom";
 
 interface GiversTableRowProps {
-  user: User;
+  user: Giver;
   index: number;
 }
 
@@ -12,11 +13,18 @@ export const GiversTableRow: React.FC<GiversTableRowProps> = ({
   user,
   index,
 }) => {
+  const navigate = useNavigate();
+
+  const handleRowClick = () => {
+    navigate(`/givers/${user.id}`);
+  };
+
   return (
     <TableRow
       className={`${
         index % 2 === 0 ? "bg-white" : "bg-gray-200"
-      }  border-transparent hover:bg-gray-100`}
+      } border-transparent hover:bg-gray-100 cursor-pointer`}
+      onClick={handleRowClick}
     >
       <TableCell className="font-medium">
         <div className="flex items-center space-x-2">
@@ -31,20 +39,11 @@ export const GiversTableRow: React.FC<GiversTableRowProps> = ({
           <span className="sm:hidden">{user.fullName.split(" ")[0]}</span>
         </div>
       </TableCell>
-      <TableCell>{user.dateReg}</TableCell>
-      <TableCell>{user.phoneNo}</TableCell>
       <TableCell className="max-w-[200px] truncate">{user.email}</TableCell>
-      <TableCell>
-        <span
-          className={`px-2 py-1 rounded-full text-xs ${
-            user.verification === "Verified"
-              ? "bg-blue-100 text-blue-800"
-              : "bg-orange-100 text-orange-800"
-          }`}
-        >
-          {user.verification}
-        </span>
-      </TableCell>
+      <TableCell>{user.dateOfContract}</TableCell>
+      <TableCell>{user.phoneNo}</TableCell>
+      <TableCell>{user.location}</TableCell>
+
       <TableCell>
         <span
           className={`px-2 py-1 rounded-full text-xs ${

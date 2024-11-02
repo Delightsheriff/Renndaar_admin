@@ -18,6 +18,7 @@ import PageNotFound from "./pages/PageNotFound";
 import PinEntry from "./pages/PinEntry";
 import UpdatePassword from "./pages/UpdatePassword";
 import SeekerDetails from "./pages/SeekerDetails";
+import { Toaster } from "./components/ui/toaster";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -40,10 +41,11 @@ function App() {
             <Route path="analytics" element={<Analytics />} />
             <Route path="disputes" element={<Disputes />} />
             <Route path="givers" element={<Givers />} />
+            <Route path="givers/:id" element={<SeekerDetails />} />
             <Route path="privacy" element={<PrivacySecurity />} />
             <Route path="rewards" element={<Rewards />} />
             <Route path="seekers" element={<Seekers />} />
-            <Route path="seekers/:id" element={<SeekerDetails />} />{" "}
+            <Route path="seekers/:id" element={<SeekerDetails />} />
             <Route path="settings" element={<Settings />} />
             <Route path="users" element={<Users />} />
           </Route>
@@ -54,6 +56,7 @@ function App() {
 
           <Route path="*" element={<PageNotFound />} />
         </Routes>
+        <Toaster />
       </BrowserRouter>
     </QueryClientProvider>
   );

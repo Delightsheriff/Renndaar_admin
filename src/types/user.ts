@@ -23,3 +23,16 @@ export interface Seeker {
 
 export type SeekerSortField = keyof Seeker;
 export type SeekerSortOrder = "asc" | "desc";
+
+export interface Giver {
+  id: string | number;
+  fullName: string;
+  email: string;
+  dateOfContract: string;
+  phoneNo: string;
+  location: string;
+  status: "Active" | "Suspended";
+}
+
+export type GiverSortField = keyof Giver;
+export type GiverSortOrder = "asc" | "desc";

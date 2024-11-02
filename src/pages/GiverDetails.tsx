@@ -2,7 +2,7 @@
 import Component from "@/features/GiverDetails/GiverDetails";
 import { useParams } from "react-router-dom";
 
-function SeekerDetails() {
+function GiverDetails() {
   const { id } = useParams();
 
   return (
@@ -15,4 +15,4 @@ function SeekerDetails() {
   );
 }
 
-export default SeekerDetails;
+export default GiverDetails;
