@@ -17,6 +17,7 @@ import ResetPin from "./pages/ResetPin";
 import PageNotFound from "./pages/PageNotFound";
 import PinEntry from "./pages/PinEntry";
 import UpdatePassword from "./pages/UpdatePassword";
+import SeekerDetails from "./pages/SeekerDetails";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,6 +43,7 @@ function App() {
             <Route path="privacy" element={<PrivacySecurity />} />
             <Route path="rewards" element={<Rewards />} />
             <Route path="seekers" element={<Seekers />} />
+            <Route path="seekers/:id" element={<SeekerDetails />} />{" "}
             <Route path="settings" element={<Settings />} />
             <Route path="users" element={<Users />} />
           </Route>
